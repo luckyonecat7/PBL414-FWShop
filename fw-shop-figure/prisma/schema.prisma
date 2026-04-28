@@ -1,0 +1,67 @@
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  name      String?
+  email     String   @unique
+  password  String
+  role      Role     @default(USER)
+  createdAt DateTime @default(now())
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+model Product {
+  id          Int     @id @default(autoincrement())
+  name        String  @unique
+  price       Int
+  category    String
+  imageUrl    String
+  description String
+  size        String?
+  stock       Int?
+}
+
+model Order {
+  id            Int         @id @default(autoincrement())
+  customerName  String
+  customerPhone String
+  address       String
+  totalAmount   Int
+  createdAt     DateTime    @default(now())
+  status        Status @default(PENDING)
+  items         OrderItem[]
+}
+
+model OrderItem {
+  id       Int    @id @default(autoincrement())
+  name     String
+  quantity Int
+  price    Int
+  order    Order  @relation(fields: [orderId], references: [id])
+  orderId  Int
+}
+
+enum Status {
+  PENDING
+  PAID
+  SHIPPED
+  COMPLETED
+}
+
+model Comment {
+  id        Int      @id @default(autoincrement())
+  name      String
+  message   String
+  createdAt DateTime @default(now())
+}

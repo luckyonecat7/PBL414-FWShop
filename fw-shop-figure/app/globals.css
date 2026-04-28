@@ -1,0 +1,13 @@
+/* app/globals.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Pastikan warna kustom Tailwind terintegrasi */
+@layer base {
+  body {
+    @apply bg-primary-dark text-text-light min-h-screen;
+    /* Hilangkan scrollbar horizontal jika ada */
+    overflow-x: hidden; 
+  }
+}
