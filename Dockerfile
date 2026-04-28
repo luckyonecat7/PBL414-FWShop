@@ -7,10 +7,13 @@ RUN npm install
 
 COPY . .
 
-# 🔥 WAJIB: generate sebelum build
+# 🔥 penting: pastikan .env ikut
+COPY .env .env
+
+# Prisma butuh ini saat build
 RUN npx prisma generate
 
-# Baru build Next.js
+# Next.js build
 RUN npm run build
 
 COPY entrypoint.sh .
