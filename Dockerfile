@@ -1,14 +1,18 @@
-FROM node:20-alpine
+FROM node:20
 
 WORKDIR /app
+
+# Copy dependency dulu (biar cache kepake)
+COPY package*.json ./
+RUN npm install
+
+# Copy semua source
 COPY . .
 
-RUN npm install prisma@6 @prisma/client@6
-RUN rm -rf node_modules package-lock.json
-RUN npm install
-RUN npx prisma generate
-RUN npx next build --turbopack
+# Copy entrypoint
+COPY entrypoint.sh .
+RUN chmod +x entrypoint.sh
 
 EXPOSE 3000
 
-CMD ["npm", "start"]
+CMD ["./entrypoint.sh"]
