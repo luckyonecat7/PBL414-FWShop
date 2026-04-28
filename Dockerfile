@@ -2,16 +2,17 @@ FROM node:20
 
 WORKDIR /app
 
-# Copy dependency dulu (biar cache kepake)
 COPY package*.json ./
 RUN npm install
 
-# Copy semua source
 COPY . .
 
+# 🔥 WAJIB: generate sebelum build
+RUN npx prisma generate
+
+# Baru build Next.js
 RUN npm run build
 
-# Copy entrypoint
 COPY entrypoint.sh .
 RUN chmod +x entrypoint.sh
 
