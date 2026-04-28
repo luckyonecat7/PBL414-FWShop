@@ -2,23 +2,22 @@ FROM node:20
 
 WORKDIR /app
 
+# Copy dependency dulu (cache)
 COPY package*.json ./
 RUN npm install
 
+# Copy source
 COPY . .
 
-# 🔥 penting: pastikan .env ikut
+# Copy env (biar prisma bisa baca saat build)
 COPY .env .env
 
-# Prisma butuh ini saat build
+# Generate Prisma
 RUN npx prisma generate
 
-# Next.js build
+# Build Next.js (TANPA turbopack)
 RUN npm run build
-
-COPY entrypoint.sh .
-RUN chmod +x entrypoint.sh
 
 EXPOSE 3000
 
-CMD ["./entrypoint.sh"]
+CMD ["npm", "start"]
